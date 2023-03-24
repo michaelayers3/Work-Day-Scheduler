@@ -4,10 +4,10 @@
 
 
 
-$(function () {
-
 
   
+   
+ 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -15,6 +15,16 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   //
+  $(function () {
+
+  var description = $(".description");
+  var saveBtn = $(".saveBtn");
+  var savedDescription = localStorage.getItem("description");
+
+  saveBtn.on('click', function () {
+  localStorage.setItem("description", JSON.stringify(description.val()));
+  console.log(description.val());
+  });
 
 
   // TODO: Add code to apply the past, present, or future class to each time
@@ -23,19 +33,33 @@ $(function () {
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
   //
+  var currentHour = dayjs().hour();
+  console.log(currentHour);
+  var timeBlock = $(".time-block");
+  console.log(timeBlock);
+  var timeBlockHour = timeBlock.attr("id");
+  console.log(timeBlockHour);
+  
+ if (currentHour > timeBlockHour) {
+    timeBlock.addClass("past");
+  } else if (currentHour < timeBlockHour) {
+    timeBlock.addClass("future");
+  } else {
+    timeBlock.addClass("present");
+  }
 
 
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
-
+  var savedDescription = localStorage.getItem("description");
+  console.log(savedDescription);
+  description.val(savedDescription);
 
   // TODO: Add code to display the current date in the header of the page.
   var today = dayjs();
-  var time = today.format("H");
+  // var time = today.format("H");
   $("#currentDay").text(today.format("dddd, MMMM D, YYYY" + ", " + "h:mm A"));
   
 });
-
-
